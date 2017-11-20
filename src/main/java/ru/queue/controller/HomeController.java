@@ -89,6 +89,16 @@ public class HomeController {
         return "profile";
     }
 
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    public String updateProfilePost(HttpServletRequest request, @ModelAttribute("name") String name, Model model, Principal principal){
+        User user = userService.findByUsername(principal.getName());
+        user.setName(name);
+        user = userService.save(user);
+        model.addAttribute("user", user);
+        model.addAttribute("updateSuccessful", true);
+        return "profile";
+    }
+
 
 
 }

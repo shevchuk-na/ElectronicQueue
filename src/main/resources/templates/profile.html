@@ -11,8 +11,6 @@
             <div class="alert alert-danger" th:if="${incorrectPassword}"><strong>Incorrect password</strong></div>
             <div class="alert alert-success" th:if="${updateSuccessful}"><strong>Update success</strong></div>
             <form th:action="@{/updateProfile}" method="post">
-                <input type="hidden" name="id" th:value="${user.id}"/>
-                <div class="bg-info" th:if="${updateProfile}">User info updated</div>
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" name="name" th:value="${user.name}"/>
@@ -25,13 +23,10 @@
                     <label for="currentPassword">Current password</label>
                     <input type="password" class="form-control" id="currentPassword" name="password" th:value="${currentPassword}"/>
                 </div>
-                <p style="color:#828282">Enter your current password</p>
-
                 <div class="form-group">
                     <label for="txtNewPassword">Password</label>&nbsp;<span id="checkPasswordMatch" style="color:red;"></span>
                     <input type="password" class="form-control" id="txtNewPassword" name="newPassword"/>
                 </div>
-
                 <div class="form-group">
                     <label for="txtConfirmPassword">Password</label>
                     <input type="password" class="form-control" id="txtConfirmPassword"/>
