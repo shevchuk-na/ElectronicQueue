@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header"/>
+
+<body>
+<div th:replace="common/header :: navbar"/>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <h3>Create new user</h3>
+            <form th:if="!${userCreated}" th:action="@{/newUser}" method="post">
+                <div class="form-group">
+                    <label for="email">* Email Address:</label>&nbsp;<span style="color:red;" th:if="${emailExists}">Email already exists. Choose a different one.</span>
+                    <input required="required" type="text" class="form-control" id="email" name="email"/>
+                    <p style="color: #828282;">A valid email address</p>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">* Password:</label>&nbsp;
+                    <input required="required" type="password" class="form-control" id="newPassword" name="password"/>
+                    <p style="color: #828282;">Enter your password here</p>
+                </div>
+                <button type="submit" class="btn btn-primary">Create new account</button>
+            </form>
+            <br/>
+            <div class="alert alert-success" role="alert" th:if="${userCreated}">User <span th:text="${email}"></span> successfully created</div>
+            <a th:href="@{/}" th:if="${userCreated}" class="btn btn-primary">Go to login page</a>
+        </div>
+        <div class="col-xs-4">
+            <h3>Your name:</h3>
+        </div>
+    </div>
+</div>
+<div th:replace="common/header :: body-bottom-scripts"/>
+</body>
+</html>

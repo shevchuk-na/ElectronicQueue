@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header"/>
+
+<body>
+<div th:replace="common/header :: navbar"/>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <h3>New queue</h3>
+            <form th:if="!${queueCreated}" th:action="@{/queues/newQueue}" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input required="required" type="text" class="form-control" id="name" name="name"/>
+                    <p style="color: #828282;">Enter queue name here</p>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input required="required" type="text" class="form-control" id="description" name="description"/>
+                    <p style="color: #828282;">Enter queue description</p>
+                </div>
+                <div class="form-group">
+                    <label for="description">Timeout:</label>
+                    <input required="required" type="number" class="form-control" id="timeout" name="timeout" value="300"/>
+                    <p style="color: #828282;">Enter queue timeout</p>
+                </div>
+                <button type="submit" class="btn btn-primary">Create new queue</button>
+            </form>
+            <br/>
+            <div class="alert alert-success" role="alert" th:if="${queueCreated}">Queue <span th:text="${queue.name}"></span> successfully created</div>
+            <a th:href="@{/queues}"><button th:if="${queueCreated}" class="btn btn-primary" type="button">Go to queues</button></a>
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+    </div>
+</div>
+<div th:replace="common/header :: body-bottom-scripts"/>
+</body>
+</html>

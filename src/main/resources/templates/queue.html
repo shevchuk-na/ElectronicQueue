@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml" lang="en">
+<head th:replace="common/header :: common-header"/>
+
+<body>
+<div th:replace="common/header :: navbar"/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-5">
+            <div th:if="${queueNotFound == null}">
+                <h3>Queue name:</h3>
+                <span th:text="${queue.name}"></span>
+                <h3>Queue description:</h3>
+                <span th:text="${queue.description}"></span>
+                <h3>Queue admin:</h3>
+                <span th:text="${queue.queueAdmin.name}"></span>
+                <h3>Queue created:</h3>
+                <span th:text="${#temporals.format(queue.created)}"></span>
+            </div>
+            <div th:if="${queueNotFound}">
+                <h3>Queue not found</h3>
+            </div>
+            <br/>
+            <br/>
+            <a th:href="@{/queues}" class="btn btn-primary">Back to queues</a>
+        </div>
+        <div class="col-sm-5">
+            <div th:if="${queueNotFound == null}">
+                <div th:if="${queue.activeTickets == 0}">
+                    <h3>Queue is empty! Be first!</h3>
+                </div>
+                <div th:if="${queue.activeTickets > 0}">
+                    <h3>Current ticket:</h3>
+                    <h2><span th:text="${queue.ticketList.get(queue.ticketList.size() - queue.activeTickets).user.name}"></span></h2>
+                    <form th:if="${userIsAdmin}" th:action="@{/queues/nextTicket}" method="post">
+                        <br/>
+                        <input type="hidden" class="form-control" id="queueId" name="id" th:value="${queue.id}"/>
+                        <button type="submit" class="btn btn-success">Next ticket</button>
+                    </form>
+                </div>
+                <form th:if="!${userHasActiveTicket}" th:action="@{/queues/newTicket}" method="post">
+                    <br/>
+                    <input type="hidden" class="form-control" id="id" name="id" th:value="${queue.id}"/>
+                    <button type="submit" class="btn btn-primary">Take a ticket</button>
+                </form>
+                <div th:if="${activeTicketList.size() > 1}">
+                    <br/>
+                    <h3>Tickets:</h3>
+                    <table class="table table-sm" id="queueTicketList" >
+                        <thead>
+                        <tr>
+                            <th class="col-xs-2">#</th>
+                            <th class="col-xs-6">Name</th>
+                            <th class="col-xs-4">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ticket,stat : ${activeTicketList}" th:class="${user.username == ticket.user.username} ? 'table-success'"
+                            th:if="${ticket != null and ticket.active and stat.first == false}">
+                            <td><span th:text="${stat.count}"></span></td>
+                            <td><span th:text="${ticket.user.name}"></span></td>
+                            <td><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <h3>Your email:</h3>
+            <span th:text="${user.username}"></span>
+            <h3>Your name:</h3>
+            <span th:text="${user.name}"></span>
+        </div>
+    </div>
+</div>
+<div th:replace="common/header :: body-bottom-scripts"/>
+</body>
+</html>
