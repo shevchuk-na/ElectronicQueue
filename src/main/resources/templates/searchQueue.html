@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header"/>
+
+<body>
+<div th:replace="common/header :: navbar"/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Search result</h3>
+            <div th:if="${noQueuesFound}"><span>No results found</span></div>
+            <div th:if="!${noQueuesFound}">
+                <table border="0" id="searchQueueList" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="col-xs-4">Name</th>
+                        <th class="col-xs-5">Description</th>
+                        <th class="col-xs-3">Tickets</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="queue : ${queuesFound}" th:onclick="'javascript:queueRowClicked(\'' + ${queue.id} + '\');'">
+                        <div th:if="${queue != null}">
+                            <td><span th:text="${queue.name}"></span></td>
+                            <td><span th:text="${queue.description}"></span></td>
+                            <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <br/>
+            <h3>Your email:</h3>
+            <span th:text="${user.username}"></span>
+            <h3>Your name:</h3>
+            <span th:text="${user.name}"></span>
+            <h3>Your queues:</h3>
+            <div th:if="${user.userQueueAdminList.size()} == 0">
+                <span>You have no queues</span>
+            </div>
+            <div th:if="${user.userQueueAdminList.size()} > 0">
+                <table border="0" id="userQueueList" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="col-xs-4">Name</th>
+                        <th class="col-xs-5">Description</th>
+                        <th class="col-xs-3">Tickets</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="queue : ${user.userQueueAdminList}" th:onclick="'javascript:queueRowClicked(\'' + ${queue.id} + '\');'">
+                        <div th:if="${queue != null}">
+                            <td><span th:text="${queue.name}"></span></td>
+                            <td><span th:text="${queue.description}"></span></td>
+                            <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+</body>
+</html>

@@ -16,4 +16,6 @@ public interface QueueService {
     Queue save(Queue queue);
 
     Set<Queue> findByCreatedAfter(LocalDateTime date);
+
+    Set<Queue> findByNameContaining(String nameContaining);
 }

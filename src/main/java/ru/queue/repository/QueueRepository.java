@@ -12,4 +12,6 @@ public interface QueueRepository extends CrudRepository<Queue, Long> {
     Queue findByName(String name);
 
     Set<Queue> findByCreatedAfter(LocalDateTime date);
+
+    Set<Queue> findByNameContaining(String name);
 }
