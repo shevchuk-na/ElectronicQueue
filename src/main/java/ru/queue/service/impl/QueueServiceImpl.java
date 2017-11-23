@@ -56,4 +56,9 @@ public class QueueServiceImpl implements QueueService {
     public Set<Queue> findByCreatedAfter(LocalDateTime date) {
         return queueRepository.findByCreatedAfter(date);
     }
+
+    @Override
+    public Set<Queue> findByNameContaining(String nameContaining) {
+        return queueRepository.findByNameContaining(nameContaining);
+    }
 }

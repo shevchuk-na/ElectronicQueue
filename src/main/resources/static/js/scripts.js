@@ -14,3 +14,7 @@ function checkPasswordMatch() {
         }
     }
 }
+
+function queueRowClicked(value) {
+    location.href = "/queues/queue?id=" + value;
+}
