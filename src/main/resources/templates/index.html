@@ -35,6 +35,10 @@
                 <h3>Your name:</h3>
                 <span th:text="${user.name}"></span>
             </span>
+            <span sec:authorize="isAnonymous()">
+                <br/>
+                <a th:href="@{/newUser}" class="btn btn-primary">Create new user</a>
+            </span>
         </div>
     </div>
 </div>

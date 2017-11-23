@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="common/header :: common-header"/>
-
+<meta http-equiv="refresh" content="5" >
 <body>
 <div th:replace="common/header :: navbar"/>
 <div class="container-fluid">
@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="queue : ${latestQueueList}" th:onclick="'javascript:rowClicked(\'' + ${queue.id} + '\');'">
+                <tr th:each="queue : ${latestQueueList}" th:onclick="'javascript:queueRowClicked(\'' + ${queue.id} + '\');'">
                     <div th:if="${queue != null}">
                         <td><span th:text="${queue.name}"></span></td>
                         <td><span th:text="${queue.description}"></span></td>

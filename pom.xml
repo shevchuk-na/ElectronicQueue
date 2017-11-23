@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>clueless-developer</groupId>
   <artifactId>electronic-queue</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>electronic-queue Maven Webapp</name>
   <url>http://maven.apache.org</url>
@@ -31,6 +31,7 @@
     <java.version>1.8</java.version>
     <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
+    <tomcat.version>8.5.23</tomcat.version>
   </properties>
 
   <dependencies>
