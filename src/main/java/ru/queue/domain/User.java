@@ -4,9 +4,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.queue.domain.security.Authority;
 import ru.queue.domain.security.Role;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,11 +28,11 @@ public class User implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    @OneToMany(mappedBy = "queueAdmin", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Queue> userQueueAdminList;
+    @OneToMany(mappedBy = "queueAdmin", cascade = CascadeType.ALL)
+    private List<Queue> userQueueAdminList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Ticket> userTicketList;
+    private List<Ticket> userTicketList;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
@@ -47,9 +49,17 @@ public class User implements UserDetails {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -57,9 +67,17 @@ public class User implements UserDetails {
         return accountNonExpired;
     }
 
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
     @Override
     public boolean isAccountNonLocked() {
         return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     @Override
@@ -67,21 +85,13 @@ public class User implements UserDetails {
         return credentialsNonExpired;
     }
 
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     public void setEnabled(boolean enabled) {
@@ -96,14 +106,6 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
     }
@@ -112,19 +114,19 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public Set<Queue> getUserQueueAdminList() {
+    public List<Queue> getUserQueueAdminList() {
         return userQueueAdminList;
     }
 
-    public void setUserQueueAdminList(Set<Queue> userQueueAdminList) {
+    public void setUserQueueAdminList(List<Queue> userQueueAdminList) {
         this.userQueueAdminList = userQueueAdminList;
     }
 
-    public Set<Ticket> getUserTicketList() {
+    public List<Ticket> getUserTicketList() {
         return userTicketList;
     }
 
-    public void setUserTicketList(Set<Ticket> userTicketList) {
+    public void setUserTicketList(List<Ticket> userTicketList) {
         this.userTicketList = userTicketList;
     }
 

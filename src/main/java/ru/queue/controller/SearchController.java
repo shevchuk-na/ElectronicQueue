@@ -11,7 +11,7 @@ import ru.queue.service.QueueService;
 import ru.queue.service.UserService;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.List;
 
 @Controller
 public class SearchController {
@@ -25,7 +25,7 @@ public class SearchController {
     @RequestMapping("/searchQueue")
     public String searchByKeyword(@ModelAttribute("keyword") String keyword, Model model, Principal principal){
         User user = userService.findByUsername(principal.getName());
-        Set<Queue> queuesFound = queueService.findByNameContaining(keyword);
+        List<Queue> queuesFound = queueService.findByNameContaining(keyword);
         if(queuesFound.isEmpty()){
             model.addAttribute("noQueuesFound", true);
         } else {

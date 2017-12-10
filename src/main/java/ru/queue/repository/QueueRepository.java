@@ -2,8 +2,9 @@ package ru.queue.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import ru.queue.domain.Queue;
+
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 public interface QueueRepository extends CrudRepository<Queue, Long> {
 
@@ -11,7 +12,7 @@ public interface QueueRepository extends CrudRepository<Queue, Long> {
 
     Queue findByName(String name);
 
-    Set<Queue> findByCreatedAfter(LocalDateTime date);
+    List<Queue> findByCreatedAfter(LocalDateTime date);
 
-    Set<Queue> findByNameContaining(String name);
+    List<Queue> findByNameContaining(String name);
 }

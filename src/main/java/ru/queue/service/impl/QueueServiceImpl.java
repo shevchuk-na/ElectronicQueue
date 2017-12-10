@@ -8,12 +8,9 @@ import ru.queue.domain.Queue;
 import ru.queue.repository.QueueRepository;
 import ru.queue.service.QueueService;
 import ru.queue.service.UserService;
-import ru.queue.utility.DateUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class QueueServiceImpl implements QueueService {
@@ -53,12 +50,12 @@ public class QueueServiceImpl implements QueueService {
     }
 
     @Override
-    public Set<Queue> findByCreatedAfter(LocalDateTime date) {
+    public List<Queue> findByCreatedAfter(LocalDateTime date) {
         return queueRepository.findByCreatedAfter(date);
     }
 
     @Override
-    public Set<Queue> findByNameContaining(String nameContaining) {
+    public List<Queue> findByNameContaining(String nameContaining) {
         return queueRepository.findByNameContaining(nameContaining);
     }
 }

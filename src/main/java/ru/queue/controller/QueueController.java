@@ -14,12 +14,14 @@ import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
 import ru.queue.utility.DateUtils;
+import ru.queue.utility.QueueComparatorByCreatedDate;
 import ru.queue.utility.TicketComparatorByIssuedDate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/queues")
@@ -35,7 +37,7 @@ public class QueueController {
     @RequestMapping("")
     public String queues(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        TreeSet<Ticket> sortedActiveTickets = new TreeSet<>(new TicketComparatorByIssuedDate());
+        List<Ticket> sortedActiveTickets = new ArrayList<>();
         for (Ticket ticket : user.getUserTicketList()) {
             if (ticket.isActive()) {
                 Queue currentQueue = queueService.findById(ticket.getQueue().getId());
@@ -49,8 +51,10 @@ public class QueueController {
             }
             sortedActiveTickets.add(ticket);
         }
+        sortedActiveTickets.sort(new TicketComparatorByIssuedDate());
         user.setUserTicketList(sortedActiveTickets);
-        Set<Queue> latestQueueList = queueService.findByCreatedAfter(DateUtils.startOfCurrentDay());
+        user.getUserQueueAdminList().sort(new QueueComparatorByCreatedDate());
+        List<Queue> latestQueueList = queueService.findByCreatedAfter(DateUtils.startOfCurrentDay());
         model.addAttribute("user", user);
         model.addAttribute("latestQueueList", latestQueueList);
         return "queues";

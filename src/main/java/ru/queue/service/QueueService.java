@@ -3,7 +3,7 @@ package ru.queue.service;
 import ru.queue.domain.Queue;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 public interface QueueService {
 
@@ -15,7 +15,7 @@ public interface QueueService {
 
     Queue save(Queue queue);
 
-    Set<Queue> findByCreatedAfter(LocalDateTime date);
+    List<Queue> findByCreatedAfter(LocalDateTime date);
 
-    Set<Queue> findByNameContaining(String nameContaining);
+    List<Queue> findByNameContaining(String nameContaining);
 }
