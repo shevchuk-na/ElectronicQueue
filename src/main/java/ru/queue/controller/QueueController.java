@@ -14,7 +14,7 @@ import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
 import ru.queue.utility.DateUtils;
-import ru.queue.utility.TicketComparator;
+import ru.queue.utility.TicketComparatorByIssuedDate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -35,7 +35,7 @@ public class QueueController {
     @RequestMapping("")
     public String queues(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        TreeSet<Ticket> sortedActiveTickets = new TreeSet<>(new TicketComparator());
+        TreeSet<Ticket> sortedActiveTickets = new TreeSet<>(new TicketComparatorByIssuedDate());
         for (Ticket ticket : user.getUserTicketList()) {
             if (ticket.isActive()) {
                 Queue currentQueue = queueService.findById(ticket.getQueue().getId());

@@ -4,10 +4,10 @@ import ru.queue.domain.Ticket;
 
 import java.util.Comparator;
 
-public class TicketComparator implements Comparator<Ticket>{
+public class TicketComparatorByIssuedDate implements Comparator<Ticket>{
 
     public static Comparator getTicketComparator(){
-        return new TicketComparator();
+        return new TicketComparatorByIssuedDate();
     }
 
     @Override
