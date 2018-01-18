@@ -1,13 +1,11 @@
 package ru.queue.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.queue.domain.Queue;
 import ru.queue.domain.User;
 import ru.queue.domain.security.Role;
 import ru.queue.repository.RoleRepository;
@@ -97,6 +95,14 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("updateSuccessful", true);
         return "profile";
+    }
+
+    @RequestMapping(value = "/generateNewName")
+    public String generateNewName(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        user.setName(NameUtil.generateName());
+        user = userService.save(user);
+        return "redirect:profile";
     }
 
 
