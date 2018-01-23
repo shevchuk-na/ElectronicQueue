@@ -2,7 +2,6 @@ package ru.queue.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,6 +20,8 @@ public class Queue {
     private int activeTickets;
     private int ticketsTotal;
     private LocalDateTime created;
+    @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public Long getId() {
         return id;
@@ -92,5 +93,13 @@ public class Queue {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

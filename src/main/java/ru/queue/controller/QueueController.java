@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.queue.domain.Comment;
 import ru.queue.domain.Queue;
 import ru.queue.domain.Ticket;
 import ru.queue.domain.User;
+import ru.queue.service.CommentService;
 import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
@@ -33,6 +35,8 @@ public class QueueController {
     private QueueService queueService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("")
     public String queues(Model model, Principal principal) {
@@ -162,6 +166,22 @@ public class QueueController {
                 }
             }
         }
+        return "redirect:queue?id=" + queue.getId();
+    }
+
+    @RequestMapping(value = "/newComment", method = RequestMethod.POST)
+    public String newCommentPost(Model model, @ModelAttribute("id") String id, @ModelAttribute("commentText") String commentText, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Queue queue = queueService.findById(Long.parseLong(id));
+        Comment newComment = new Comment();
+        newComment.setAuthor(user);
+        newComment.setQueue(queue);
+        newComment.setText(commentText);
+        newComment.setCreated(LocalDateTime.now());
+        newComment.setApproved(false);
+        newComment = commentService.save(newComment);
+        queue.getComments().add(newComment);
+        queue = queueService.save(queue);
         return "redirect:queue?id=" + queue.getId();
     }
 }

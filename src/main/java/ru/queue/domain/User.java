@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "queueAdmin", cascade = CascadeType.ALL)
     private List<Queue> userQueueAdminList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Ticket> userTicketList;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
