@@ -15,6 +15,7 @@ import ru.queue.service.CommentService;
 import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
+import ru.queue.utility.CommentComparatorByCreatedDate;
 import ru.queue.utility.DateUtils;
 import ru.queue.utility.QueueComparatorByCreatedDate;
 import ru.queue.utility.TicketComparatorByIssuedDate;
@@ -112,6 +113,7 @@ public class QueueController {
             } else {
                 model.addAttribute("userIsAdmin", false);
             }
+            queue.getComments().sort(CommentComparatorByCreatedDate.getInstance());
             model.addAttribute("queue", queue);
             List<Ticket> activeTicketList = new ArrayList<>();
             if (queue.getActiveTickets() > 1) {
@@ -140,7 +142,7 @@ public class QueueController {
             ticket.setQueue(queue);
             ticket.setActive(true);
             ticket.setIssued(LocalDateTime.now());
-            queue.getTicketList().add(ticket);
+            queue.getTicketList().add(ticket);          //TODO:DELETE THIS
             queue.setActiveTickets(queue.getActiveTickets() + 1);
             queue.setTicketsTotal(queue.getTicketsTotal() + 1);
             ticket = ticketService.save(ticket);
@@ -180,8 +182,49 @@ public class QueueController {
         newComment.setCreated(LocalDateTime.now());
         newComment.setApproved(false);
         newComment = commentService.save(newComment);
-        queue.getComments().add(newComment);
-        queue = queueService.save(queue);
         return "redirect:queue?id=" + queue.getId();
+    }
+
+    @RequestMapping(value = "/editComment")
+    public String editComment(Model model, @RequestParam("id") String id, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Comment comment = commentService.findById(Long.parseLong(id));
+        if (!user.getId().equals(comment.getAuthor().getId())) {
+            model.addAttribute("unauthorized", true);
+        } else {
+            model.addAttribute("comment", comment);
+            return "editComment";
+        }
+        return "redirect:queue?id=" + comment.getQueue().getId();
+    }
+
+    @RequestMapping(value = "editCommentPost")
+    public String editCommentPost(Model model, @ModelAttribute("id") String id, @ModelAttribute("commentText") String commentText, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Comment comment = commentService.findById(Long.parseLong(id));
+        if (!user.getId().equals(comment.getAuthor().getId())) {
+            model.addAttribute("unauthorized", true);
+        } else {
+            if (!commentText.isEmpty()) {
+                comment.setText(commentText);
+                comment.setApproved(false);
+                comment = commentService.save(comment);
+            } else {
+
+            }
+        }
+        return "redirect:queue?id=" + comment.getQueue().getId();
+    }
+
+    @RequestMapping(value = "deleteComment")
+    public String deleteComment(Model model, @RequestParam("id") String id, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Comment comment = commentService.findById(Long.parseLong(id));
+        if (!user.getId().equals(comment.getAuthor().getId())) {
+            model.addAttribute("unauthorized", true);
+        } else {
+            commentService.delete(comment);
+        }
+        return "redirect:queue?id=" + comment.getQueue().getId();
     }
 }

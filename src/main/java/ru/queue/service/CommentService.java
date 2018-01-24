@@ -12,4 +12,6 @@ public interface CommentService {
     List<Comment> findByQueue(Queue queue);
 
     Comment save(Comment comment);
+
+    void delete(Comment comment);
 }

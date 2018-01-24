@@ -12,7 +12,7 @@ public class Queue {
     private Long id;
     private String name;
     private String description;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User queueAdmin;
     @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Ticket> ticketList;

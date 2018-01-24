@@ -25,7 +25,12 @@
                 <h3>Comments:</h3>
                 <div th:each="comment:${queue.comments}" class="row">
                     <div class="col-sm-12">
-                        <span th:text="${comment.author.name}"></span><span> : </span><span th:text="${comment.text}"></span>
+                        <span th:text="${comment.author.name}"></span><span>: </span><span th:text="${comment.text}"></span>
+                        <br/>
+                        <span>Posted on </span><span th:text="${#temporals.format(comment.created)}"></span>
+                        <div th:if="${user.id} == ${comment.author.id}">
+                            <span><a th:href="@{/queues/editComment(id=${comment.id})}">Edit</a> <a th:href="@{/queues/deleteComment(id=${comment.id})}">Delete</a></span>
+                        </div>
                         <hr/>
                     </div>
                 </div>
@@ -34,8 +39,9 @@
                         <form th:action="@{/queues/newComment}" method="post">
                             <div class="form-group">
                                 <input type="hidden" class="form-control" id="queueIdAddComment" name="id" th:value="${queue.id}"/>
-                                <textarea class="form-control" id="textAddComment" name="commentText" placeholder="Add your comment"/>
-
+                                <textarea class="form-control" id="textAddComment" name="commentText" placeholder="Add your comment"></textarea>
+                            </div>
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Add comment</button>
                             </div>
                         </form>
