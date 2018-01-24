@@ -17,5 +17,7 @@ public interface QueueService {
 
     List<Queue> findByCreatedAfter(LocalDateTime date);
 
+    List<Queue> findLastTen();
+
     List<Queue> findByNameContaining(String nameContaining);
 }

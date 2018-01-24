@@ -58,4 +58,13 @@ public class QueueServiceImpl implements QueueService {
     public List<Queue> findByNameContaining(String nameContaining) {
         return queueRepository.findByNameContaining(nameContaining);
     }
+
+    @Override
+    public List<Queue> findLastTen() {
+        Long lastTenId = queueRepository.findTopByOrderByIdDesc().getId() - 10;
+        if (lastTenId < 1) {
+            lastTenId = (long) 1;
+        }
+        return queueRepository.findByIdGreaterThan(lastTenId);
+    }
 }

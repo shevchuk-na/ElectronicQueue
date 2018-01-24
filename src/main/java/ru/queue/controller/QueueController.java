@@ -16,8 +16,8 @@ import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
 import ru.queue.utility.CommentComparatorByCreatedDate;
-import ru.queue.utility.DateUtils;
-import ru.queue.utility.QueueComparatorByCreatedDate;
+import ru.queue.utility.QueueComparatorByCreatedDateAsc;
+import ru.queue.utility.QueueComparatorByCreatedDateDesc;
 import ru.queue.utility.TicketComparatorByIssuedDate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,8 +58,9 @@ public class QueueController {
         }
         sortedActiveTickets.sort(new TicketComparatorByIssuedDate());
         user.setUserTicketList(sortedActiveTickets);
-        user.getUserQueueAdminList().sort(new QueueComparatorByCreatedDate());
-        List<Queue> latestQueueList = queueService.findByCreatedAfter(DateUtils.startOfCurrentDay());
+        user.getUserQueueAdminList().sort(QueueComparatorByCreatedDateAsc.getInstance());
+        List<Queue> latestQueueList = queueService.findLastTen();
+        latestQueueList.sort(QueueComparatorByCreatedDateDesc.getInstance());
         model.addAttribute("user", user);
         model.addAttribute("latestQueueList", latestQueueList);
         return "queues";
