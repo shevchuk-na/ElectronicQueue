@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+<!--suppress CheckEmptyScriptTag -->
 <html xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="common/header :: common-header"/>
 
@@ -29,12 +31,12 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Log in</button>
             </form>
-            <span sec:authorize="isAuthenticated()">
+            <div sec:authorize="isAuthenticated()">
                 <h3>Your email:</h3>
                 <span th:text="${user.username}"></span>
                 <h3>Your name:</h3>
                 <span th:text="${user.name}"></span>
-            </span>
+            </div>
             <span sec:authorize="isAnonymous()">
                 <br/>
                 <a th:href="@{/newUser}" class="btn btn-primary">Create new user</a>
