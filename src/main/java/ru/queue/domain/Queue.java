@@ -17,7 +17,6 @@ public class Queue {
     @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Ticket> ticketList;
     private int timeout;
-    private int activeTickets;
     private int ticketsTotal;
     private LocalDateTime created;
     @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL)
@@ -69,14 +68,6 @@ public class Queue {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
-    }
-
-    public int getActiveTickets() {
-        return activeTickets;
-    }
-
-    public void setActiveTickets(int activeTickets) {
-        this.activeTickets = activeTickets;
     }
 
     public int getTicketsTotal() {

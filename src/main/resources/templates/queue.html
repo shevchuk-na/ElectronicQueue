@@ -55,12 +55,12 @@
         </div>
         <div class="col-sm-5">
             <div th:if="${queueNotFound == null}">
-                <div th:if="${queue.activeTickets == 0}">
+                <div th:if="${queue.ticketList.size() == 0}">
                     <h3>Queue is empty! Be first!</h3>
                 </div>
-                <div th:if="${queue.activeTickets > 0}">
+                <div th:if="${queue.ticketList.size() > 0}">
                     <h3>Current ticket:</h3>
-                    <h2><span th:text="${queue.ticketList.get(queue.ticketList.size() - queue.activeTickets).user.name}"></span></h2>
+                    <h2><span th:text="${queue.ticketList.get(0).user.name}"></span></h2>
                     <form th:if="${userIsAdmin}" th:action="@{/queues/nextTicket}" method="post">
                         <br/>
                         <input type="hidden" class="form-control" id="queueIdNextTicket" name="id" th:value="${queue.id}"/>
@@ -72,7 +72,7 @@
                     <input type="hidden" class="form-control" id="queueIdNewTicket" name="id" th:value="${queue.id}"/>
                     <button type="submit" class="btn btn-primary">Take a ticket</button>
                 </form>
-                <div th:if="${activeTicketList.size() > 1}">
+                <div th:if="${queue.ticketList.size() > 1}">
                     <br/>
                     <h3>Tickets:</h3>
                     <table class="table table-sm" id="queueTicketList">
@@ -84,7 +84,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="ticket,stat : ${activeTicketList}" th:class="${user.username == ticket.user.username} ? 'table-success'"
+                        <tr th:each="ticket,stat : ${queue.ticketList}" th:class="${user.username == ticket.user.username} ? 'table-success'"
                             th:if="${ticket != null and ticket.active and stat.first == false}">
                             <td><span th:text="${stat.count}"></span></td>
                             <td><span th:text="${ticket.user.name}"></span></td>

@@ -15,10 +15,10 @@ import ru.queue.service.CommentService;
 import ru.queue.service.QueueService;
 import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
-import ru.queue.utility.CommentComparatorByCreatedDate;
-import ru.queue.utility.QueueComparatorByCreatedDateAsc;
-import ru.queue.utility.QueueComparatorByCreatedDateDesc;
-import ru.queue.utility.TicketComparatorByIssuedDate;
+import ru.queue.utility.comparator.CommentComparatorByCreatedDateAsc;
+import ru.queue.utility.comparator.QueueComparatorByCreatedDateAsc;
+import ru.queue.utility.comparator.QueueComparatorByCreatedDateDesc;
+import ru.queue.utility.comparator.TicketComparatorByIssuedDateAsc;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -42,28 +42,28 @@ public class QueueController {
     @RequestMapping("")
     public String queues(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        List<Ticket> sortedActiveTickets = new ArrayList<>();
-        for (Ticket ticket : user.getUserTicketList()) {
-            if (ticket.isActive()) {
-                Queue currentQueue = queueService.findById(ticket.getQueue().getId());
-                List<Ticket> activeTickets = currentQueue.getTicketList().subList(currentQueue.getTicketList().size() - currentQueue.getActiveTickets(), currentQueue.getTicketList().size());
-                for (int i = 0; i < activeTickets.size(); i++) {
-                    if (activeTickets.get(i).getUser().getUsername().equals(ticket.getUser().getUsername())) {
-                        ticket.setRelativePosition(i + 1);
-                        break;
-                    }
-                }
-            }
-            sortedActiveTickets.add(ticket);
-        }
-        sortedActiveTickets.sort(new TicketComparatorByIssuedDate());
-        user.setUserTicketList(sortedActiveTickets);
+        fillRelativePositions(user);
+        user.getUserTicketList().sort(TicketComparatorByIssuedDateAsc.getInstance());
         user.getUserQueueAdminList().sort(QueueComparatorByCreatedDateAsc.getInstance());
         List<Queue> latestQueueList = queueService.findLastTen();
         latestQueueList.sort(QueueComparatorByCreatedDateDesc.getInstance());
         model.addAttribute("user", user);
         model.addAttribute("latestQueueList", latestQueueList);
         return "queues";
+    }
+
+    void fillRelativePositions(User user) {
+        for (Ticket ticket : user.getUserTicketList()) {
+            if (ticket.isActive()) {
+                Queue currentQueue = queueService.findById(ticket.getQueue().getId());
+                for (int i = 0; i < currentQueue.getTicketList().size(); i++) {
+                    if (currentQueue.getTicketList().get(i).getUser().getUsername().equals(ticket.getUser().getUsername())) {
+                        ticket.setRelativePosition(i + 1);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @RequestMapping("/newQueue")
@@ -114,11 +114,11 @@ public class QueueController {
             } else {
                 model.addAttribute("userIsAdmin", false);
             }
-            queue.getComments().sort(CommentComparatorByCreatedDate.getInstance());
+            queue.getComments().sort(CommentComparatorByCreatedDateAsc.getInstance());
             model.addAttribute("queue", queue);
             List<Ticket> activeTicketList = new ArrayList<>();
-            if (queue.getActiveTickets() > 1) {
-                activeTicketList = queue.getTicketList().subList(queue.getTicketList().size() - queue.getActiveTickets(), queue.getTicketList().size());
+            if (queue.getTicketList().size() > 1) {
+                activeTicketList = queue.getTicketList().subList(queue.getTicketList().size() - 1, queue.getTicketList().size());
             }
             model.addAttribute("activeTicketList", activeTicketList);
         }
@@ -132,7 +132,7 @@ public class QueueController {
         Queue queue = queueService.findById(Long.parseLong(id));
         boolean userHasActiveTicket = false;
         for (Ticket ticket : user.getUserTicketList()) {
-            if (ticket.getQueue().equals(queue) && ticket.isActive()) {
+            if (ticket.getQueue().equals(queue)) {
                 userHasActiveTicket = true;
                 break;
             }
@@ -143,8 +143,6 @@ public class QueueController {
             ticket.setQueue(queue);
             ticket.setActive(true);
             ticket.setIssued(LocalDateTime.now());
-            queue.getTicketList().add(ticket);          //TODO:DELETE THIS
-            queue.setActiveTickets(queue.getActiveTickets() + 1);
             queue.setTicketsTotal(queue.getTicketsTotal() + 1);
             ticket = ticketService.save(ticket);
             queue = queueService.save(queue);
@@ -159,15 +157,9 @@ public class QueueController {
         if (!queue.getQueueAdmin().getUsername().equals(user.getUsername())) {
             model.addAttribute("unauthorized", true);
         } else {
-            for (Ticket ticket : queue.getTicketList()) {
-                if (ticket.isActive()) {
-                    ticket.setActive(false);
-                    ticket = ticketService.save(ticket);
-                    queue.setActiveTickets(queue.getActiveTickets() - 1);
-                    queue = queueService.save(queue);
-                    break;
-                }
-            }
+            queue.getTicketList().sort(TicketComparatorByIssuedDateAsc.getInstance());
+            Ticket ticket = queue.getTicketList().get(0);
+            ticketService.delete(ticket);
         }
         return "redirect:queue?id=" + queue.getId();
     }

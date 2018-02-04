@@ -11,4 +11,6 @@ public interface TicketService {
     Ticket removeTicket(Queue queue, Ticket ticket, User user);
 
     Ticket save(Ticket ticket);
+
+    void delete(Ticket ticket);
 }

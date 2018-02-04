@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.queue.domain.User;
 import ru.queue.domain.security.Role;
 import ru.queue.repository.RoleRepository;
-import ru.queue.service.QueueService;
-import ru.queue.service.TicketService;
 import ru.queue.service.UserService;
 import ru.queue.utility.NameUtil;
 import ru.queue.utility.SecurityUtility;
@@ -23,11 +21,7 @@ import java.util.UUID;
 public class HomeController {
 
     @Autowired
-    private QueueService queueService;
-    @Autowired
     private UserService userService;
-    @Autowired
-    private TicketService ticketService;
     @Autowired
     private RoleRepository roleRepository;
 

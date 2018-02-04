@@ -1,4 +1,4 @@
-package ru.queue.utility;
+package ru.queue.utility.comparator;
 
 import ru.queue.domain.Queue;
 
@@ -7,6 +7,9 @@ import java.util.Comparator;
 public class QueueComparatorByCreatedDateAsc implements Comparator<Queue> {
 
     private static QueueComparatorByCreatedDateAsc instance = new QueueComparatorByCreatedDateAsc();
+
+    private QueueComparatorByCreatedDateAsc() {
+    }
 
     public static QueueComparatorByCreatedDateAsc getInstance() {
         return instance;

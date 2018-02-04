@@ -18,7 +18,6 @@ public class SearchController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private QueueService queueService;
 

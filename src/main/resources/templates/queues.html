@@ -2,7 +2,6 @@
 <!--suppress CheckEmptyScriptTag, HtmlUnknownTag -->
 <html xmlns:th="http://www.w3.org/1000/xhtml" lang="en">
 <head th:replace="common/header :: common-header"/>
-<!--<meta http-equiv="refresh" content="5" >-->
 <body>
 <div th:replace="common/header :: navbar"/>
 <div class="container-fluid">
@@ -20,9 +19,9 @@
                 <tbody>
                 <tr th:each="queue : ${latestQueueList}" th:onclick="'javascript:queueRowClicked(\'' + ${queue.id} + '\');'">
                     <div th:if="${queue != null}">
-                        <td><span th:text="${queue.name}"></span></td>
-                        <td><span th:text="${queue.description}"></span></td>
-                        <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                        <td th:text="${queue.name}"></td>
+                        <td th:text="${queue.description}"></td>
+                        <td th:text="${queue.ticketList.size()} + '/' + ${queue.ticketsTotal}"></td>
                     </div>
                 </tr>
                 </tbody>
@@ -40,37 +39,37 @@
                 <table border="0" id="userTicketList" class="table table-hover">
                     <thead>
                     <tr>
-                        <th class="col-xs-2">#</th>
-                        <th class="col-xs-6">Queue</th>
-                        <th class="col-xs-4">Date</th>
+                        <th class="col-xs-2" data-field="place">#</th>
+                        <th class="col-xs-6" data-field="name">Queue</th>
+                        <th class="col-xs-4" data-field="created">Date</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="ticket : ${user.userTicketList}" th:onclick="'javascript:queueRowClicked(\'' + ${ticket.queue.id} + '\');'" th:switch="${ticket.relativePosition}">
                         <div th:case="'1'" th:if="${ticket != null and ticket.active}">
-                            <td th:class="table-success"><span th:text="${ticket.relativePosition}"></span></td>
-                            <td th:class="table-success"><span th:text="${ticket.queue.name}"></span></td>
-                            <td th:class="table-success"><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                            <td th:class="table-success" th:text="${ticket.relativePosition}"></td>
+                            <td th:class="table-success" th:text="${ticket.queue.name}"></td>
+                            <td th:class="table-success" th:text="${#temporals.format(ticket.issued)}"></td>
                         </div>
                         <div th:case="'2'" th:if="${ticket != null and ticket.active}">
-                            <td th:class="table-success"><span th:text="${ticket.relativePosition}"></span></td>
-                            <td th:class="table-success"><span th:text="${ticket.queue.name}"></span></td>
-                            <td th:class="table-success"><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                            <td th:class="table-success" th:text="${ticket.relativePosition}"></td>
+                            <td th:class="table-success" th:text="${ticket.queue.name}"></td>
+                            <td th:class="table-success" th:text="${#temporals.format(ticket.issued)}"></td>
                         </div>
                         <div th:case="'3'" th:if="${ticket != null and ticket.active}">
-                            <td th:class="table-warning"><span th:text="${ticket.relativePosition}"></span></td>
-                            <td th:class="table-warning"><span th:text="${ticket.queue.name}"></span></td>
-                            <td th:class="table-warning"><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                            <td th:class="table-warning" th:text="${ticket.relativePosition}"></td>
+                            <td th:class="table-warning" th:text="${ticket.queue.name}"></td>
+                            <td th:class="table-warning" th:text="${#temporals.format(ticket.issued)}"></td>
                         </div>
                         <div th:case="'4'" th:if="${ticket != null and ticket.active}">
-                            <td th:class="table-warning"><span th:text="${ticket.relativePosition}"></span></td>
-                            <td th:class="table-warning"><span th:text="${ticket.queue.name}"></span></td>
-                            <td th:class="table-warning"><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                            <td th:class="table-warning" th:text="${ticket.relativePosition}"></td>
+                            <td th:class="table-warning" th:text="${ticket.queue.name}"></td>
+                            <td th:class="table-warning" th:text="${#temporals.format(ticket.issued)}"></td>
                         </div>
                         <div th:case="'5'" th:if="${ticket != null and ticket.active}">
-                            <td th:class="table-warning"><span th:text="${ticket.relativePosition}"></span></td>
-                            <td th:class="table-warning"><span th:text="${ticket.queue.name}"></span></td>
-                            <td th:class="table-warning"><span th:text="${#temporals.format(ticket.issued)}"></span></td>
+                            <td th:class="table-warning" th:text="${ticket.relativePosition}"></td>
+                            <td th:class="table-warning" th:text="${ticket.queue.name}"></td>
+                            <td th:class="table-warning" th:text="${#temporals.format(ticket.issued)}"></td>
                         </div>
                     </tr>
                     </tbody>
@@ -101,11 +100,13 @@
                         <div th:if="${queue != null}">
                             <td><span th:text="${queue.name}"></span></td>
                             <td><span th:text="${queue.description}"></span></td>
-                            <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                            <td><span th:text="${queue.ticketList.size()}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
                         </div>
                     </tr>
                     </tbody>
                 </table>
+                <div id="feedback"></div>
+                <a class="btn btn-primary" th:href="'javascript:sendAjaxTicketUpdate()'">Update</a>
             </div>
         </div>
     </div>
