@@ -16,18 +16,26 @@
             <a th:href="@{/queues}" class="btn btn-primary">Go to queues</a>
         </div>
         <div class="col-sm-2">
+            <br/>
             <div class="alert alert-danger" th:if="${param.error != null}" style="color: red;">Incorrect username or password</div>
             <form sec:authorize="isAnonymous()" th:action="@{/login}" method="post">
-                <br/>
                 <div class="form-group">
                     <label for="username">Login:</label>
                     <input required="required" type="text" class="form-control" id="username" name="username"/>
-                    <p style="color: #828282;">Enter your email here</p>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input required="required" type="password" class="form-control" id="password" name="password"/>
-                    <p style="color: #828282;">Enter your password</p>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe" name="remember-me"/>
+                            <label class="form-check-label" for="rememberMe">Remember me:</label>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Log in</button>
             </form>
