@@ -12,14 +12,14 @@ public class Queue {
     private Long id;
     private String name;
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User queueAdmin;
-    @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "queue", cascade = CascadeType.REMOVE)
     private List<Ticket> ticketList;
     private int timeout;
     private int ticketsTotal;
     private LocalDateTime created;
-    @OneToMany(mappedBy = "queue", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "queue", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
     public Long getId() {

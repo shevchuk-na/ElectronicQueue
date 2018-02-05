@@ -2,18 +2,31 @@ package ru.queue.domain.ajax;
 
 import ru.queue.domain.Ticket;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 public class AjaxTicket {
 
+    private long id;
     private int place;
     private String name;
-    private LocalDateTime created;
+    private Date created;
 
     public AjaxTicket(Ticket ticket) {
+        id = ticket.getQueue().getId();
         place = ticket.getRelativePosition();
         name = ticket.getQueue().getName();
-        created = ticket.getIssued();
+        Instant instant = ticket.getIssued().toInstant(ZoneOffset.ofHours(+3));
+        created = Date.from(instant);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getPlace() {
@@ -32,11 +45,11 @@ public class AjaxTicket {
         this.name = name;
     }
 
-    public LocalDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 }

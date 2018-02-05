@@ -1,6 +1,7 @@
 package ru.queue.domain.ajax;
 
 import ru.queue.domain.Ticket;
+import ru.queue.utility.comparator.TicketComparatorByIssuedDateAsc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class AjaxTicketList {
     private List<AjaxTicket> result;
 
     public void fillResult(List<Ticket> tickets) {
+        tickets.sort(TicketComparatorByIssuedDateAsc.getInstance());
         result = new ArrayList<>();
         for (Ticket ticket : tickets) {
             AjaxTicket ticketData = new AjaxTicket(ticket);

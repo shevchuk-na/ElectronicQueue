@@ -28,10 +28,10 @@ public class User implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    @OneToMany(mappedBy = "queueAdmin", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "queueAdmin", cascade = CascadeType.REMOVE)
     private List<Queue> userQueueAdminList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Ticket> userTicketList;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
