@@ -24,7 +24,7 @@
                         <div th:if="${queue != null}">
                             <td><span th:text="${queue.name}"></span></td>
                             <td><span th:text="${queue.description}"></span></td>
-                            <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                            <td><span th:text="${queue.ticketList.size()}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
                         </div>
                     </tr>
                     </tbody>
@@ -55,7 +55,7 @@
                         <div th:if="${queue != null}">
                             <td><span th:text="${queue.name}"></span></td>
                             <td><span th:text="${queue.description}"></span></td>
-                            <td><span th:text="${queue.activeTickets}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
+                            <td><span th:text="${queue.ticketList.size()}"></span>/<span th:text="${queue.ticketsTotal}"></span></td>
                         </div>
                     </tr>
                     </tbody>
