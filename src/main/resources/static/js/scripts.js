@@ -22,8 +22,7 @@ function queueRowClicked(value) {
 $(document).ready(async function () {
         setInterval("getAjaxTicketUpdate()", 5000);
     }
-)
-;
+);
 
 function getAjaxTicketUpdate() {
 

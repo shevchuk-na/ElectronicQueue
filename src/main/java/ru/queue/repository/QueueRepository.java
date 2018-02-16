@@ -10,13 +10,11 @@ public interface QueueRepository extends CrudRepository<Queue, Long> {
 
     Queue findById(Long id);
 
-    Queue findTopByOrderByIdDesc();
+    List<Queue> findTop10ByOrderByIdDesc();
 
     Queue findByName(String name);
 
     List<Queue> findByCreatedAfter(LocalDateTime date);
 
     List<Queue> findByNameContaining(String name);
-
-    List<Queue> findByIdGreaterThan(Long id);
 }
