@@ -20,13 +20,15 @@ function queueRowClicked(value) {
 }
 
 $(document).ready(async function () {
+    if ($("body").is(".queues")) {
         setInterval("getAjaxTicketUpdate()", 5000);
+    }
     }
 );
 
 function getAjaxTicketUpdate() {
 
-    var date_options = {
+    let date_options = {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -35,11 +37,14 @@ function getAjaxTicketUpdate() {
         second: 'numeric'
     };
 
+    let string = "";
+
     $.ajax({
         type: "GET",
         contentType: "application/json",
         url: "/ajax/getTicketUpdate",
         dataType: 'json',
+        data: string,
         cache: false,
         timeout: 3000,
         success: function (data) {
@@ -50,7 +55,7 @@ function getAjaxTicketUpdate() {
                 $.each(this, function (k, v) {
                     if (k != "id") {
                         if (k == "created") {
-                            let date = new Date(v)
+                            let date = new Date(v);
                             let date_string = date.toLocaleString("ru", date_options);
                             date_string = date_string.replace(',', '');
                             tbl_row += "<td>" + date_string + "</td>";

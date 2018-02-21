@@ -6,9 +6,9 @@
 
 <body>
 <div th:replace="common/header :: navbar"/>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-md-5">
             <h3>Create new user</h3>
             <form th:if="!${userCreated}" th:action="@{/newUser}" method="post">
                 <div class="form-group">
@@ -27,7 +27,7 @@
             <div class="alert alert-success" role="alert" th:if="${userCreated}">User <span th:text="${email}"></span> successfully created</div>
             <a th:href="@{/}" th:if="${userCreated}" class="btn btn-primary">Go to login page</a>
         </div>
-        <div class="col-xs-4">
+        <div class="col-md-7">
         </div>
     </div>
 </div>
