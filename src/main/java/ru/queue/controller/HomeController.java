@@ -82,9 +82,13 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateProfilePost(HttpServletRequest request, @ModelAttribute("name") String name, Model model, Principal principal){
+    public String updateProfilePost(HttpServletRequest request, @ModelAttribute("name") String name, @ModelAttribute("newPassword") String password, Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         user.setName(name);
+        if (!password.isEmpty()) {
+            String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
+            user.setPassword(encryptedPassword);
+        }
         user = userService.save(user);
         model.addAttribute("user", user);
         model.addAttribute("updateSuccessful", true);

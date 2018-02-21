@@ -75,7 +75,6 @@ public class QueueController {
     public String newQueuePost(HttpServletRequest request,
                                @ModelAttribute("name") String name,
                                @ModelAttribute("description") String description,
-                               @ModelAttribute("timeout") int timeout,
                                Model model,
                                Principal principal) {
         User user = userService.findByUsername(principal.getName());
@@ -88,7 +87,6 @@ public class QueueController {
         newQueue.setDescription(description);
         newQueue.setQueueAdmin(user);
         newQueue.setTicketsTotal(0);
-        newQueue.setTimeout(timeout);
         newQueue.setCreated(LocalDateTime.now());
         newQueue = queueService.save(newQueue);
         model.addAttribute("queueCreated", true);

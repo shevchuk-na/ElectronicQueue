@@ -1,15 +1,19 @@
+$(document).ready(function () {
+    $("#txtNewPassword, #txtConfirmPassword").keyup(checkPasswordMatch);
+});
+
 function checkPasswordMatch() {
-    var password = $("#txtNewPassword").val();
-    var confirmPassword = $("#txtConfirmPassword").val();
-    if (password == "" && confirmPassword == "") {
+    let password = $("#txtNewPassword").val();
+    let confirmPassword = $("#txtConfirmPassword").val();
+    if (password === "" && confirmPassword === "") {
         $("#checkPasswordMatch").html("");
         $("#updateProfileButton").prop('disabled', false);
     } else {
-        if (password != confirmPassword) {
-            $("#checkPasswordMatch").html("Passwords do not match!");
+        if (password !== confirmPassword) {
+            $("#checkPasswordMatch").html("Passwords do not match!").css("color", "red");
             $("#updateProfileButton").prop('disabled', true);
         } else {
-            $("#checkPasswordMatch").html("Passwords match!");
+            $("#checkPasswordMatch").html("Passwords match!").css("color", "green");
             $("#updateProfileButton").prop('disabled', false);
         }
     }
@@ -20,9 +24,9 @@ function queueRowClicked(value) {
 }
 
 $(document).ready(async function () {
-    if ($("body").is(".queues")) {
-        setInterval("getAjaxTicketUpdate()", 5000);
-    }
+        if ($("body").is(".queues")) {
+            setInterval("getAjaxTicketUpdate()", 5000);
+        }
     }
 );
 
